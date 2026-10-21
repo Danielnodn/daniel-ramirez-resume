@@ -41,17 +41,20 @@
 
   <script>
     // ========================
-    // AUTO-REFRESH ON JSON CHANGE (Faster: 500ms)
+    // AUTO-REFRESH ON JSON CHANGE (Local Only)
     // ========================
     (function autoRefresh() {
+      // If we are on GitHub Pages (or any live host), hide the badge and stop checking
+      if (window.location.hostname.includes('github.io')) {
+        document.getElementById('auto-refresh-indicator').style.display = 'none';
+        return; 
+      }
+
       let lastModified = 0;
       let isFirstCheck = true;
       
       function checkForChanges() {
-        fetch('resume3.json', { 
-          method: 'HEAD',
-          cache: 'no-cache'
-        })
+        fetch('resume3.json', { method: 'HEAD', cache: 'no-cache' })
         .then(response => {
           if (!response.ok) throw new Error('File not found');
           const lastModifiedHeader = response.headers.get('last-modified');
@@ -62,9 +65,7 @@
               const indicator = document.getElementById('auto-refresh-indicator');
               indicator.textContent = '🔄 Reloading...';
               indicator.style.background = '#ef4444';
-              setTimeout(() => {
-                location.reload();
-              }, 300);
+              setTimeout(() => { location.reload(); }, 300);
             }
             lastModified = newTime;
             isFirstCheck = false;
@@ -73,7 +74,6 @@
         .catch(() => {});
       }
       
-      // Check every 0.5 seconds for faster updates
       setInterval(checkForChanges, 500);
       console.log('🔄 Auto-refresh enabled (checks every 0.5s)');
     })();
@@ -135,8 +135,8 @@
             <div class="flex gap-x-1 pt-1 font-mono text-sm text-gray-500 print:hidden">
               <!-- Email -->
               <a href="mailto:${data.basics.email}" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium border border-gray-200 bg-white hover:bg-gray-100 hover:text-gray-900 size-8">${icons.mail}</a>
-              <!-- WhatsApp -->
-              <a href="https://wa.me/${data.basics.whatsapp.replace('+', '')}" target="_blank" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium border border-gray-200 bg-white hover:bg-gray-100 hover:text-gray-900 size-8 hover:text-green-600" title="WhatsApp">${icons.whatsapp}</a>
+              <!-- WhatsApp (Uses direct link from JSON) -->
+              <a href="${data.basics.whatsapp}" target="_blank" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium border border-gray-200 bg-white hover:bg-gray-100 hover:text-gray-900 size-8 hover:text-green-600" title="WhatsApp">${icons.whatsapp}</a>
               <!-- Website -->
               <a href="${data.basics.website}" target="_blank" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium border border-gray-200 bg-white hover:bg-gray-100 hover:text-gray-900 size-8">${icons.website}</a>
               <!-- LinkedIn -->
@@ -181,7 +181,7 @@
                 <h4 class="font-mono text-sm leading-none text-gray-600">${job.company} • ${job.location}</h4>
               </div>
               <div class="text-pretty font-mono text-gray-500 mt-2 text-xs">
-                <ul class="list-disc pl-4 space-y-1">
+                <ul class="list-disc pl-4 space-y-2">
                   ${job.highlights.map(highlight => `<li>${highlight}</li>`).join('')}
                 </ul>
               </div>
@@ -242,16 +242,17 @@
         </section>
       `;
 
-      // Awards
+      // Certifications (Formerly Awards)
       const awardsHTML = `
         <section class="flex min-h-0 flex-col gap-y-3">
-          <h2 class="text-xl font-bold">Awards</h2>
+          <h2 class="text-xl font-bold">Certifications</h2>
           ${data.awards.map(award => `
             <div class="rounded-lg bg-white text-gray-900">
               <div class="flex flex-col space-y-1.5">
                 <div class="flex items-center justify-between gap-x-2 text-base">
                   <h3 class="font-semibold leading-none">${award.title}</h3>
-                  <div class="text-sm tabular-nums text-gray-500 font-mono">${award.date}</div>
+                  <!-- Fallback to startDate – endDate if 'date' is missing -->
+                  <div class="text-sm tabular-nums text-gray-500 font-mono">${award.date || (award.startDate + ' – ' + award.endDate)}</div>
                 </div>
                 <h4 class="font-mono text-sm leading-none text-gray-600">${award.organization}</h4>
               </div>
@@ -288,20 +289,7 @@
         </section>
       `;
 
-      // References
-      const referencesHTML = `
-        <section class="flex min-h-0 flex-col gap-y-4">
-          <h2 class="text-xl font-bold">References</h2>
-          ${data.references.map(ref => `
-            <div class="space-y-1">
-              <h3 class="font-semibold text-base text-gray-900">${ref.name}, ${ref.title}</h3>
-              <p class="font-mono text-xs text-gray-500 italic leading-relaxed">“${ref.quote}”</p>
-            </div>
-          `).join('')}
-        </section>
-      `;
-
-      // Combine all sections (Note: References HIDEN)
+      // Combine all sections (References are omitted)
       app.innerHTML = headerHTML + aboutHTML + workHTML + educationHTML + skillsHTML + projectsHTML + awardsHTML + languagesHTML + interestsHTML;
     }
   </script>
