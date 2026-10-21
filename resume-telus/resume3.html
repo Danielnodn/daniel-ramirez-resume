@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daniel R. · Data Scientist </title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    #auto-refresh-indicator {
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      background: #22c55e;
+      color: white;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-family: monospace;
+      z-index: 9999;
+      opacity: 0.8;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="auto-refresh-indicator">🔄 Auto-refresh active</div>
+  
+  <div class="container relative mx-auto scroll-my-12 overflow-auto p-4 print:p-12 md:p-16">
+    <main id="app" class="mx-auto w-full max-w-2xl space-y-8 bg-white print:space-y-6">
+      <div class="text-center py-12">
+        <p class="text-gray-500">Loading resume data...</p>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // ========================
+    // AUTO-REFRESH ON JSON CHANGE (Faster: 500ms)
+    // ========================
+    (function autoRefresh() {
+      let lastModified = 0;
+      let isFirstCheck = true;
+      
+      function checkForChanges() {
+        fetch('resume3.json', { 
+          method: 'HEAD',
+          cache: 'no-cache'
+        })
+        .then(response => {
+          if (!response.ok) throw new Error('File not found');
+          const lastModifiedHeader = response.headers.get('last-modified');
+          if (lastModifiedHeader) {
+            const newTime = new Date(lastModifiedHeader).getTime();
+            if (!isFirstCheck && lastModified !== 0 && newTime !== lastModified) {
+              console.log('🔄 JSON file changed! Reloading...');
+              const indicator = document.getElementById('auto-refresh-indicator');
+              indicator.textContent = '🔄 Reloading...';
+              indicator.style.background = '#ef4444';
+              setTimeout(() => {
+                location.reload();
+              }, 300);
+            }
+            lastModified = newTime;
+            isFirstCheck = false;
+          }
+        })
+        .catch(() => {});
+      }
+      
+      // Check every 0.5 seconds for faster updates
+      setInterval(checkForChanges, 500);
+      console.log('🔄 Auto-refresh enabled (checks every 0.5s)');
+    })();
+
+    // ========================
+    // LOAD RESUME DATA
+    // ========================
+    function loadResume() {
+      fetch('resume3.json')
+        .then(response => {
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          return response.json();
+        })
+        .then(data => {
+          renderResume(data);
+        })
+        .catch(error => {
+          console.error('Error loading resume:', error);
+          document.getElementById('app').innerHTML = `
+            <div class="text-center py-12 bg-red-50 rounded-lg">
+              <p class="text-red-600 font-bold">❌ Could not load resume3.json</p>
+              <p class="text-gray-600 mt-2">${error.message}</p>
+              <p class="text-gray-400 text-sm mt-4">Make sure you're using a server (Live Server or Python HTTP)</p>
+            </div>
+          `;
+        });
+    }
+
+    loadResume();
+
+    // ========================
+    // RENDER FUNCTION
+    // ========================
+    function renderResume(data) {
+      const app = document.getElementById('app');
+      
+      // Icons including GitHub and WhatsApp
+      const icons = {
+        globe: `<svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><g id="Globe"><path d="M14.645,2.428a8.1,8.1,0,0,0-1.61-.3,9.332,9.332,0,0,0-3.6.28l-.07.02a9.928,9.928,0,0,0,.01,19.15,9.091,9.091,0,0,0,2.36.34,1.274,1.274,0,0,0,.27.02,9.65,9.65,0,0,0,2.63-.36,9.931,9.931,0,0,0,.01-19.15Zm-.27.96a8.943,8.943,0,0,1,5.84,5.11h-4.26a13.778,13.778,0,0,0-2.74-5.35A8.254,8.254,0,0,1,14.375,3.388Zm-2.37-.09a12.78,12.78,0,0,1,2.91,5.2H9.075A12.545,12.545,0,0,1,12.005,3.3Zm3.16,6.2a13.193,13.193,0,0,1,0,5.01H8.845a12.185,12.185,0,0,1-.25-2.5,12.353,12.353,0,0,1,.25-2.51Zm-5.6-6.09.07-.02a9.152,9.152,0,0,1,1.16-.23A13.618,13.618,0,0,0,8.045,8.5H3.8A9,9,0,0,1,9.565,3.408Zm-6.5,8.6a8.71,8.71,0,0,1,.37-2.51h4.39a13.95,13.95,0,0,0-.23,2.51,13.757,13.757,0,0,0,.23,2.5H3.435A8.591,8.591,0,0,1,3.065,12.008Zm6.57,8.61a8.9,8.9,0,0,1-5.84-5.11h4.24a13.632,13.632,0,0,0,2.77,5.35A8.1,8.1,0,0,1,9.635,20.618Zm-.56-5.11h5.84a12.638,12.638,0,0,1-2.91,5.21A12.872,12.872,0,0,1,9.075,15.508Zm5.3,5.11a11.551,11.551,0,0,1-1.17.24,13.8,13.8,0,0,0,2.75-5.35h4.26A8.924,8.924,0,0,1,14.375,20.618Zm1.8-6.11a13.611,13.611,0,0,0,0-5.01h4.39a8.379,8.379,0,0,1,.37,2.51,8.687,8.687,0,0,1-.36,2.5Z"></path></g></svg>`,
+        mail: `<svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" class="size-4" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><g id="Mail"><path d="M19.435,4.065H4.565a2.5,2.5,0,0,0-2.5,2.5v10.87a2.5,2.5,0,0,0,2.5,2.5h14.87a2.5,2.5,0,0,0,2.5-2.5V6.565A2.5,2.5,0,0,0,19.435,4.065Zm-14.87,1h14.87a1.489,1.489,0,0,1,1.49,1.39c-2.47,1.32-4.95,2.63-7.43,3.95a6.172,6.172,0,0,1-1.06.53,2.083,2.083,0,0,1-1.67-.39c-1.42-.75-2.84-1.51-4.25-2.26-1.14-.6-2.3-1.21-3.44-1.82A1.491,1.491,0,0,1,4.565,5.065Zm16.37,12.37a1.5,1.5,0,0,1-1.5,1.5H4.565a1.5,1.5,0,0,1-1.5-1.5V7.6c2.36,1.24,4.71,2.5,7.07,3.75a5.622,5.622,0,0,0,1.35.6,2.872,2.872,0,0,0,2-.41c1.45-.76,2.89-1.53,4.34-2.29,1.04-.56,2.07-1.1,3.11-1.65Z"></path></g></svg>`,
+        whatsapp: `<svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 448 512" class="size-4" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"></path></svg>`,
+        website: `<svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" class="size-4" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>`,
+        linkedin: `<svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 448 512" class="size-4" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M100.28 448H7.4V148.9h92.88zM53.79 108.1C24.09 108.1 0 83.5 0 53.8a53.79 53.79 0 0 1 107.58 0c0 29.7-24.1 54.3-53.79 54.3zM447.9 448h-92.68V302.4c0-34.7-.7-79.2-48.29-79.2-48.29 0-55.69 37.7-55.69 76.7V448h-92.78V148.9h89.08v40.8h1.3c12.4-23.5 42.69-48.3 87.88-48.3 94 0 111.28 61.9 111.28 142.3V448z"/></svg>`,
+        github: `<svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 496 512" class="size-4" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>`
+      };
+
+      // Header with WhatsApp and GitHub
+      const headerHTML = `
+        <div class="flex items-center justify-between">
+          <div class="flex-1 space-y-1.5">
+            <h1 class="text-2xl font-bold">${data.basics.name}</h1>
+            <p class="max-w-md text-pretty font-mono text-sm text-gray-500">${data.basics.title}</p>
+            <p class="max-w-md items-center text-pretty font-mono text-xs text-gray-500">
+              <span class="inline-flex gap-x-1.5 align-baseline leading-none">
+                ${icons.globe}
+                ${data.basics.location}
+              </span>
+            </p>
+            <div class="flex gap-x-1 pt-1 font-mono text-sm text-gray-500 print:hidden">
+              <!-- Email -->
+              <a href="mailto:${data.basics.email}" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium border border-gray-200 bg-white hover:bg-gray-100 hover:text-gray-900 size-8">${icons.mail}</a>
+              <!-- WhatsApp -->
+              <a href="https://wa.me/${data.basics.whatsapp.replace('+', '')}" target="_blank" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium border border-gray-200 bg-white hover:bg-gray-100 hover:text-gray-900 size-8 hover:text-green-600" title="WhatsApp">${icons.whatsapp}</a>
+              <!-- Website -->
+              <a href="${data.basics.website}" target="_blank" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium border border-gray-200 bg-white hover:bg-gray-100 hover:text-gray-900 size-8">${icons.website}</a>
+              <!-- LinkedIn -->
+              <a href="${data.basics.linkedin}" target="_blank" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium border border-gray-200 bg-white hover:bg-gray-100 hover:text-gray-900 size-8">${icons.linkedin}</a>
+              <!-- GitHub -->
+              <a href="${data.basics.github}" target="_blank" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium border border-gray-200 bg-white hover:bg-gray-100 hover:text-gray-900 size-8" title="GitHub">${icons.github}</a>
+            </div>
+            <!-- Print Version Contacts -->
+            <div class="hidden flex-col gap-x-1 font-mono text-sm text-gray-500 print:flex">
+              <span class="underline">${data.basics.email}</span>
+              <span class="underline">${data.basics.whatsapp}</span>
+              <span class="underline">${data.basics.website.replace('https://', '')}</span>
+              <span class="underline">${data.basics.github.replace('https://', '')}</span>
+            </div>
+          </div>
+          <!-- Avatar -->
+          <span class="relative flex shrink-0 overflow-hidden rounded-xl size-28">
+            <span class="flex h-full w-full items-center justify-center rounded-xl bg-gray-100 text-2xl font-bold">${data.basics.avatarInitials}</span>
+          </span>
+        </div>
+      `;
+
+      // About
+      const aboutHTML = `
+        <section class="flex min-h-0 flex-col gap-y-3">
+          <h2 class="text-xl font-bold">About</h2>
+          <p class="text-pretty font-mono text-sm text-gray-500">${data.basics.summary}</p>
+        </section>
+      `;
+
+      // Work Experience
+      const workHTML = `
+        <section class="flex min-h-0 flex-col gap-y-3">
+          <h2 class="text-xl font-bold">Work Experience</h2>
+          ${data.work.map(job => `
+            <div class="rounded-lg bg-white text-gray-900">
+              <div class="flex flex-col space-y-1.5">
+                <div class="flex items-center justify-between gap-x-2 text-base">
+                  <h3 class="inline-flex items-center justify-center gap-x-1 font-semibold leading-none">${job.title}</h3>
+                  <div class="text-sm tabular-nums text-gray-500">${job.startDate} – ${job.endDate}</div>
+                </div>
+                <h4 class="font-mono text-sm leading-none text-gray-600">${job.company} • ${job.location}</h4>
+              </div>
+              <div class="text-pretty font-mono text-gray-500 mt-2 text-xs">
+                <ul class="list-disc pl-4 space-y-1">
+                  ${job.highlights.map(highlight => `<li>${highlight}</li>`).join('')}
+                </ul>
+              </div>
+            </div>
+          `).join('')}
+        </section>
+      `;
+
+      // Education
+      const educationHTML = `
+        <section class="flex min-h-0 flex-col gap-y-3">
+          <h2 class="text-xl font-bold">Education</h2>
+          ${data.education.map(edu => `
+            <div class="rounded-lg bg-white text-gray-900">
+              <div class="flex flex-col space-y-1.5">
+                <div class="flex items-center justify-between gap-x-2 text-base">
+                  <h3 class="font-semibold leading-none">${edu.degree}</h3>
+                  <div class="text-sm tabular-nums text-gray-500">${edu.year || edu.startYear + ' – ' + edu.endYear}</div>
+                </div>
+                <h4 class="font-mono text-sm leading-none text-gray-600">${edu.institution}</h4>
+              </div>
+              <div class="text-pretty font-mono text-sm text-gray-500 mt-2">${edu.details}</div>
+            </div>
+          `).join('')}
+        </section>
+      `;
+
+      // Skills
+      const skillsHTML = `
+        <section class="flex min-h-0 flex-col gap-y-3">
+          <h2 class="text-xl font-bold">Skills</h2>
+          <div class="flex flex-wrap gap-1">
+            ${data.skills.map(skill => `
+              <span class="inline-flex items-center rounded-md border border-transparent bg-gray-900 px-2.5 py-0.5 text-xs font-semibold font-mono text-white">${skill}</span>
+            `).join('')}
+          </div>
+        </section>
+      `;
+
+      // Projects
+      const projectsHTML = `
+        <section class="flex min-h-0 flex-col gap-y-3">
+          <h2 class="text-xl font-bold">Projects</h2>
+          <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 print:grid-cols-3">
+            ${data.projects.map(project => `
+              <div class="flex flex-col justify-between rounded-lg border border-gray-200 bg-white p-3 shadow-sm hover:border-gray-300 transition-colors">
+                <div class="space-y-1.5">
+                  <h3 class="font-bold text-base tracking-tight flex items-center gap-1">
+                    <a href="${project.url}" target="${project.url !== '#' ? '_blank' : ''}" class="hover:underline flex items-center gap-1">
+                      ${project.title} <span class="text-emerald-500 font-bold text-xs">•</span>
+                    </a>
+                  </h3>
+                  <p class="font-mono text-xs text-gray-600 leading-relaxed">${project.description}</p>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </section>
+      `;
+
+      // Awards
+      const awardsHTML = `
+        <section class="flex min-h-0 flex-col gap-y-3">
+          <h2 class="text-xl font-bold">Awards</h2>
+          ${data.awards.map(award => `
+            <div class="rounded-lg bg-white text-gray-900">
+              <div class="flex flex-col space-y-1.5">
+                <div class="flex items-center justify-between gap-x-2 text-base">
+                  <h3 class="font-semibold leading-none">${award.title}</h3>
+                  <div class="text-sm tabular-nums text-gray-500 font-mono">${award.date}</div>
+                </div>
+                <h4 class="font-mono text-sm leading-none text-gray-600">${award.organization}</h4>
+              </div>
+              <p class="text-pretty font-mono text-xs text-gray-500 mt-2">${award.description}</p>
+            </div>
+          `).join('')}
+        </section>
+      `;
+
+      // Languages
+      const languagesHTML = `
+        <section class="flex min-h-0 flex-col gap-y-3">
+          <h2 class="text-xl font-bold">Languages</h2>
+          <div class="font-mono text-sm text-gray-600">
+            ${data.languages.map(lang => `
+              <span class="font-semibold text-gray-900">${lang.name}</span> – ${lang.level}<br>
+            `).join('')}
+          </div>
+        </section>
+      `;
+
+      // Interests
+      const interestsHTML = `
+        <section class="flex min-h-0 flex-col gap-y-3">
+          <h2 class="text-xl font-bold">Interests</h2>
+          <div class="space-y-2 font-mono text-sm">
+            ${data.interests.map(interest => `
+              <div class="flex items-center gap-x-3">
+                <span class="font-bold text-gray-900 w-28">${interest.category}</span>
+                <span class="text-xs text-gray-600">${interest.items}</span>
+              </div>
+            `).join('')}
+          </div>
+        </section>
+      `;
+
+      // References
+      const referencesHTML = `
+        <section class="flex min-h-0 flex-col gap-y-4">
+          <h2 class="text-xl font-bold">References</h2>
+          ${data.references.map(ref => `
+            <div class="space-y-1">
+              <h3 class="font-semibold text-base text-gray-900">${ref.name}, ${ref.title}</h3>
+              <p class="font-mono text-xs text-gray-500 italic leading-relaxed">“${ref.quote}”</p>
+            </div>
+          `).join('')}
+        </section>
+      `;
+
+      // Combine all sections (Note: References HIDEN)
+      app.innerHTML = headerHTML + aboutHTML + workHTML + educationHTML + skillsHTML + projectsHTML + awardsHTML + languagesHTML + interestsHTML;
+    }
+  </script>
+</body>
+</html>

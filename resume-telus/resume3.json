@@ -1,0 +1,170 @@
+{
+  "basics": {
+    "name": "Daniel R.",
+    "title": "Data Science Freelancer • Marketing Analytics Specialist",
+    "location": "Mexico City, Mexico",
+    "email": "daniel.ramirezup@gmail.com",
+    "whatsapp": "https://wa.link/zr5oeg",
+    "website": "https://bit.ly/danieldrm",
+    "linkedin": "https://www.linkedin.com/in/daniel-r-data-specialist",
+    "github": "https://github.com/Danielnodn",
+    "avatarInitials": "DR",
+    "summary": "Data-driven analyst and Data Scientist with extensive experience in performance marketing (SEM, SEO), UX optimization, and full-funnel analytics. Proven track record engineering automated data pipelines, building predictive models to drive ROI, and applying structured evaluation frameworks to cross-reference multiple authoritative sources — documenting reasoning to ensure data accuracy and auditability. Based in Mexico with 5+ consecutive years of residency and deep regional context; bilingual English/Spanish."
+  },
+  "work": [
+    {
+      "title": "Digital Analytics & Growth Freelancer",
+      "company": "Self-Employed",
+      "location": "Remote / Mexico City",
+      "startDate": "Jun 2020",
+      "endDate": "Present",
+      "highlights": [
+        "Built and maintained automated ETL pipelines in Python and AWS (S3, EC2) to ingest, clean, and transform marketing and sales data across multiple client accounts — reducing manual reporting effort by 30% and standardizing file workflows (CSV, JSON, pipe-delimited).",
+        "Designed and maintained SQL (PostgreSQL) data models and queries serving as the source of truth for client reporting, KPI tracking, and dashboards, ensuring consistent and reliable metrics across engagements.",
+        "Ran structured data quality audits — applying multi-dimensional evaluation frameworks and cross-referencing business, campaign, and geographic data against multiple authoritative sources — to flag inconsistencies, outdated records, and category misclassifications; documented reasoning for auditability.",
+        "Designed interactive Tableau and Looker KPI dashboards tracking conversion funnels, churn, A/B tests, and campaign performance, enabling data-informed budget reallocations and +25% ROI improvement.",
+        "Built and maintained e-commerce and education websites end-to-end: UX/UI design, CMS configuration, and direct HTML5/JavaScript editing — owning both the front-end experience.",
+        "Communicated data status, issues, and corrections to technical and non-technical stakeholders (clients, teammates, leadership), translating business requirements into accurate, verifiable data outputs.",
+        "Managed cross-channel Google and Meta Ads campaigns for e-commerce, preschool education, and packaging clients, boosting ROI by +25%, CTR by +30%, and conversions by +20%.",
+        "Executed technical SEO audits (GA4, GSC, Ahrefs) and web speed optimizations, raising overall SEO health score by +40% and organic traffic by +50%."
+      ]
+    },
+    {
+      "title": "Community Manager & Web Design Intern",
+      "company": "ABC Bioempaques S.A. de C.V.",
+      "location": "State of Mexico, Mexico",
+      "startDate": "Sep 2019",
+      "endDate": "Mar 2020",
+      "highlights": [
+        "Coordinated the digital redesign of the corporate website in Figma/XD, gathering requirements from internal stakeholders and ensuring brand consistency, mobile responsiveness, and accurate product/business information across pages.",
+        "Reviewed and verified published business and product details against source documentation before publishing, flagging inconsistencies and correcting records to maintain data accuracy.",
+        "Curated targeted content for industrial B2B audiences and maintained a structured content catalog, expanding organic LinkedIn reach by +20%."
+      ]
+    },
+    {
+      "title": "Customer Support Executive",
+      "company": "Sykes México",
+      "location": "State of Mexico, Mexico",
+      "startDate": "Feb 2016",
+      "endDate": "Aug 2018",
+      "highlights": [
+        "Delivered AFORE and insurance customer support via CRM ticketing platforms while driving cross-sales and consistently exceeding key performance indicators."
+      ]
+    }
+  ],
+  "education": [
+    {
+      "degree": "Master’s Degree in Data Science",
+      "institution": "IEXE Universidad",
+      "year": "2025",
+      "details": "Relevant coursework & tools: Data modeling, SQL (PostgreSQL), Python (Pandas/NumPy), Machine Learning, ETL & data pipelines, AWS (S3, EC2), Tableau/Power BI dashboards, data quality and validation."
+    },
+    {
+      "degree": "Bachelor’s Degree in Communication Science",
+      "institution": "Universidad Tecnológica de México",
+      "startYear": "2015",
+      "endYear": "2018",
+      "details": "Relevant coursework: Media analytics, cross-channel strategy, UX design, visual storytelling, research methods, data interpretation, audience analysis"
+    }
+  ],
+  "skills": [
+    "Python",
+    "SQL (PostgreSQL)",
+    "Pandas / NumPy",
+    "GA4",
+    "Google Ads",
+    "Meta Ads Manager",
+    "Tableau",
+    "Excel / Sheets",
+    "AWS (S3, EC2)",
+    "HTML / CSS / JavaScript",
+    "UX/UI Design (Figma, XD)",
+    "CMS"
+  ],
+  "projects": [
+    {
+      "title": "Happy Brains",
+      "url": "https://danielnodn.github.io/danielramirez.github.io/",
+      "description": "UX-focused website (Figma → Framer/HTML5), GA4 custom KPI tracking, and Meta/Google Ads optimization — +25% ROI, +30% ROAS, −10% CPL."
+    },
+    {
+      "title": "ABC Bioempaques",
+      "url": "https://danielnodn.github.io/danielramirez.github.io/",
+      "description": "Data-informed B2B strategy: content architecture and UX in WordPress/Figma, GA4 tracking, and audience-segmented content — +20% LinkedIn reach."
+    },
+    {
+      "title": "Chiara Barcelona",
+      "url": "https://danielnodn.github.io/danielramirez.github.io/",
+      "description": "Headless e-commerce (Framer + Figma) with Meta Business and Instagram Shopping, GA4 tracking, and GA4 → Python → PostgreSQL pipelines."
+    }
+  ],
+  "awards": [
+    {
+      "title": "Executive Certificate: Security in Information Technologies",
+      "organization": "Universidad Tecnológica de México",
+      "startDate": "Dec 2020",
+      "endDate": "Feb 2021",
+      "description": "Information security fundamentals, data protection practices, and secure handling of digital information systems."
+    },
+    {
+      "title": "Executive Certificate: Management and Leadership Skills",
+      "organization": "IEXE Universidad",
+      "startDate": "Jan 2025",
+      "endDate": "May 2025",
+      "description": "Team leadership, project management, and cross-functional communication across technical and non-technical stakeholders."
+    }
+  ],
+  "languages": [
+    {
+      "name": "Spanish",
+      "level": "Native speaker"
+    },
+    {
+      "name": "English",
+      "level": "Professional working proficiency"
+    }
+  ],
+  
+
+"interests": [
+ {
+    "category": "Branding",
+    "items": "Brand identity systems & visual storytelling"
+  },
+  {
+    "category": "Finance",
+    "items": "Personal finance, markets & investing fundamentals"
+  },
+  {
+    "category": "Business",
+    "items": "Freelance business building & independent product work"
+  },
+  {
+    "category": "Web Design",
+    "items": "Custom HTML/JavaScript, UI/UX design systems & code customization"
+  },
+  
+  {
+    "category": "Audio",
+    "items": "Visual design, generative art"
+  }
+],
+
+  "references": [
+    {
+      "name": "Joey Flores",
+      "title": "Co-founder and CEO of Earbits, Inc.",
+      "quote": "Thomas was hired as a lead developer and, upon the leaving of our co-founder took over as CTO of Earbits. Thomas is, hands down, one of those A Players you hear of companies dying to hire. He is incredibly smart, not just at code but about everything from classical music to Chinese Language and culture. Thomas is great to work with and, as a well established contributor to open source projects and several successful ventures, commands the respect of engineers at all levels. I would suggest doing anything you can to have him on your team."
+    },
+    {
+      "name": "Yotam Rosenbaum",
+      "title": "SVP of Operations, Earbits, Inc.",
+      "quote": "I've had the great pleasure of working with Thomas for the past three years at Earbits, and on a few side projects. Two years ago our CTO left on a moment's notice, Thomas saved our company by quickly stepping up to fill this role. He has been with our company through thick and thin and made serious personal sacrifices in order to help the company during tough times. He is a phenomenal hacker and a true team player. Highly recommended!"
+    },
+    {
+      "name": "Ryan Kirkman",
+      "title": "Senior Software Engineer at Nerdwallet",
+      "quote": "Thomas is an extremely talented engineer with a very broad range of skills and experience. From being a thought leader in the front-end community via backbonetutorials.com and cdnjs.com, to designing and implementing the API for cdnjs.com, working with Thomas has been fantastic learning experience. Thomas is truly a full stack develop, and his work output is incredible. If there is any opportunity to work with Thomas, I take it. He is the definition of an A player."
+    }
+  ]
+}
